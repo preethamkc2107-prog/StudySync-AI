@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySync AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-badge">S</div>
+        <div>
+          <p class="brand-name">StudySync AI</p>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-target="dashboard-section">Dashboard</button>
+        <button class="nav-link" data-target="subjects-section">Subjects</button>
+        <button class="nav-link" data-target="exams-section">Exams</button>
+        <button class="nav-link" data-target="planner-section">Study Planner</button>
+        <button class="nav-link" data-target="progress-section">Progress</button>
+      </nav>
+      <div class="user-menu">
+        <span id="userNameLabel" class="user-name hidden"></span>
+        <button id="logoutBtn" class="secondary-btn user-btn hidden" type="button">Log out</button>
+      </div>
+    </header>
+
+    <main class="container" id="appContent">
+      <section id="dashboard-section" class="page-section active">
+        <div class="hero card">
+          <div>
+            <p class="eyebrow">Student study dashboard</p>
+            <h1>Welcome back, learner!</h1>
+            <p class="subtext">Stay consistent, track progress, and plan smarter for every exam.</p>
+          </div>
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            <strong id="dashboardProgressValue">0%</strong>
+            <small>Goal progress</small>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="card stat-card accent-blue">
+            <span class="stat-label">Total Tasks</span>
+            <strong id="dashboardTotalTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-green">
+            <span class="stat-label">Completed</span>
+            <strong id="dashboardCompletedTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-yellow">
+            <span class="stat-label">Pending</span>
+            <strong id="dashboardPendingTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-purple">
+            <span class="stat-label">Upcoming Exam</span>
+            <strong id="dashboardNextExam">0</strong>
+          </article>
+          <article class="card stat-card accent-blue">
+            <span class="stat-label">Average Quiz Score</span>
+            <strong id="dashboardAverageScore">0%</strong>
+          </article>
+          <article class="card stat-card accent-green">
+            <span class="stat-label">Strong Topics</span>
+            <strong id="dashboardStrongTopics">0</strong>
+          </article>
+          <article class="card stat-card accent-yellow">
+            <span class="stat-label">Weak Topics</span>
+            <strong id="dashboardWeakTopics">0</strong>
+          </article>
+          <article class="card stat-card accent-purple">
+            <span class="stat-label">Topics Needing Practice</span>
+            <strong id="dashboardPracticeTopics">0</strong>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="card panel">
+            <div class="panel-header">
+              <h3>Today's study tasks</h3>
+            </div>
+            <ul id="todayTasksList" class="task-list"></ul>
+          </div>
+
+          <div class="card panel">
+            <div class="panel-header">
+              <h3>Upcoming exam</h3>
+            </div>
+            <ul id="upcomingExamList" class="exam-list"></ul>
+          </div>
+        </div>
+
+        <div class="card panel quiz-history-panel">
+          <div class="panel-header">
+            <h3>Recent quiz results</h3>
+          </div>
+          <ul id="quizHistoryList" class="quiz-history-list"></ul>
+        </div>
+      </section>
+
+      <section id="subjects-section" class="page-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Organize your learning</p>
+            <h2>Subjects</h2>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <form id="subjectForm">
+            <div class="form-row compact-row">
+              <div class="input-group">
+                <label for="subjectName">Subject name</label>
+                <input id="subjectName" type="text" placeholder="e.g. Biology" required />
+              </div>
+              <input type="hidden" id="subjectId" />
+              <button type="submit" class="primary-btn">Save Subject</button>
+              <button type="button" id="cancelSubjectEdit" class="secondary-btn hidden">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="subjectsList" class="card-grid"></div>
+      </section>
+
+      <section id="exams-section" class="page-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Stay exam-ready</p>
+            <h2>Exam Planner</h2>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <form id="examForm">
+            <div class="form-grid">
+              <div class="input-group">
+                <label for="examName">Exam name</label>
+                <input id="examName" type="text" placeholder="Midterm Mathematics" required />
+              </div>
+
+              <div class="input-group">
+                <label for="examSubject">Subject</label>
+                <select id="examSubject" required></select>
+              </div>
+
+              <div class="input-group">
+                <label for="examDate">Exam date</label>
+                <input id="examDate" type="date" required />
+              </div>
+
+              <div class="input-group">
+                <label for="examTopics">Chapters / topics</label>
+                <input id="examTopics" type="number" min="1" placeholder="12" required />
+              </div>
+            </div>
+
+            <button type="submit" class="primary-btn">Add Exam</button>
+          </form>
+        </div>
+
+        <div class="card panel">
+          <div class="panel-header">
+            <h3>Upcoming exams</h3>
+          </div>
+          <div id="examsList" class="exam-list large-list"></div>
+        </div>
+      </section>
+
+      <section id="planner-section" class="page-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Smart schedule</p>
+            <h2>AI Study Planner</h2>
+          </div>
+        </div>
+
+        <div class="card form-card">
+          <form id="plannerForm">
+            <div class="form-grid">
+              <div class="input-group">
+                <label for="plannerSubject">Subject</label>
+                <select id="plannerSubject" required></select>
+              </div>
+
+              <div class="input-group">
+                <label for="plannerExamDate">Exam date</label>
+                <input id="plannerExamDate" type="date" required />
+              </div>
+
+              <div class="input-group">
+                <label for="plannerTopics">Number of topics</label>
+                <input id="plannerTopics" type="number" min="1" placeholder="10" required />
+              </div>
+            </div>
+
+            <div id="studyWindowInfo" class="planner-note">Select an exam date to see your available study days.</div>
+            <button type="submit" class="primary-btn">Generate Study Plan</button>
+          </form>
+        </div>
+
+        <div class="card panel">
+          <div class="panel-header">
+            <h3>Generated plan</h3>
+          </div>
+          <ul id="studyPlanTasks" class="task-list"></ul>
+        </div>
+      </section>
+
+      <section id="progress-section" class="page-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Track your momentum</p>
+            <h2>Progress</h2>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="card stat-card accent-blue">
+            <span class="stat-label">Total Tasks</span>
+            <strong id="progressTotalTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-green">
+            <span class="stat-label">Completed</span>
+            <strong id="progressCompletedTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-yellow">
+            <span class="stat-label">Pending</span>
+            <strong id="progressPendingTasks">0</strong>
+          </article>
+          <article class="card stat-card accent-purple">
+            <span class="stat-label">Progress</span>
+            <strong id="progressPercentage">0%</strong>
+          </article>
+        </div>
+
+        <div class="card panel progress-panel">
+          <div class="progress-header">
+            <span>Overall progress</span>
+            <strong id="progressBarText">0%</strong>
+          </div>
+          <div class="progress-bar">
+            <div id="progressBarFill" class="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <div class="card panel history-panel">
+          <div class="panel-header">
+            <h3>Study History</h3>
+          </div>
+          <div id="studyHistoryList" class="history-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="authModal" class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="auth-card card">
+        <div class="auth-brand">
+          <div class="brand-badge">S</div>
+          <div>
+            <p class="brand-name">StudySync AI</p>
+            <p class="auth-subtitle">Your study progress, in one place.</p>
+          </div>
+        </div>
+
+        <div class="auth-toggle" role="tablist" aria-label="Authentication options">
+          <button class="auth-tab active" type="button" data-auth-mode="login" aria-selected="true">Login</button>
+          <button class="auth-tab" type="button" data-auth-mode="signup" aria-selected="false">Sign up</button>
+        </div>
+
+        <form id="authForm" class="auth-form">
+          <div class="input-group">
+            <label for="authName">Full name</label>
+            <input id="authName" name="name" type="text" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="input-group">
+            <label for="authEmail">Email</label>
+            <input id="authEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="input-group">
+            <label for="authPassword">Password</label>
+            <input id="authPassword" name="password" type="password" minlength="6" placeholder="At least 6 characters" autocomplete="current-password" required />
+          </div>
+          <p id="authMessage" class="auth-message" aria-live="polite"></p>
+          <button class="primary-btn auth-submit" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="quizModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle">
+      <div class="modal-backdrop" data-action="close-quiz"></div>
+      <div class="quiz-modal-card card">
+        <button class="modal-close" type="button" data-action="close-quiz" aria-label="Close quiz">×</button>
+        <div class="quiz-setup" id="quizSetup">
+          <p class="eyebrow">Smart Quiz</p>
+          <h2 id="quizModalTitle">Test your topic knowledge</h2>
+          <p class="subtext">Choose a subject and topic to generate a short, focused quiz.</p>
+          <div class="quiz-form-grid">
+            <div class="input-group">
+              <label for="quizSubject">Subject</label>
+              <select id="quizSubject" required></select>
+            </div>
+            <div class="input-group">
+              <label for="quizTopic">Topic</label>
+              <select id="quizTopic" required disabled></select>
+            </div>
+          </div>
+          <div class="quiz-modal-actions">
+            <button type="button" class="primary-btn" id="startQuizBtn">Start Quiz</button>
+          </div>
+        </div>
+
+        <div class="quiz-runner hidden" id="quizRunner">
+          <div class="quiz-topbar">
+            <div>
+              <p class="eyebrow" id="quizTopicLabel">Topic</p>
+              <h2 id="quizQuestionTitle">Question</h2>
+            </div>
+            <span class="quiz-progress" id="quizProgress">Question 1 of 5</span>
+          </div>
+          <div class="quiz-progress-bar" aria-hidden="true">
+            <span id="quizProgressFill"></span>
+          </div>
+
+          <form id="quizForm">
+            <div id="quizOptions" class="quiz-options" role="radiogroup" aria-label="Quiz answer options"></div>
+            <div class="quiz-navigation">
+              <button type="button" class="secondary-btn" id="previousQuestionBtn">Previous</button>
+              <button type="button" class="primary-btn" id="nextQuestionBtn">Next</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="quiz-results hidden" id="quizResults">
+          <div class="quiz-result-score">
+            <span class="result-badge" id="quizResultBadge">Strong</span>
+            <h2 id="quizResultScore">0 / 5</h2>
+            <p id="quizResultPercentage">0%</p>
+          </div>
+          <div id="quizResultSummary" class="quiz-result-summary"></div>
+          <div id="quizAnswerReview" class="quiz-answer-review"></div>
+          <div class="quiz-modal-actions">
+            <button type="button" class="primary-btn" id="retakeQuizBtn">Retake Quiz</button>
+            <button type="button" class="secondary-btn" id="closeResultsBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
